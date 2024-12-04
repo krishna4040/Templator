@@ -21,13 +21,13 @@ interface ServiceConfig {
 }
 
 interface FrontendService {
-  platform: Platform
-  libraries: FrontendLibraries[]
+  FE_platform: Platform
+  FE_libraries: Record<FrontendFeatures, FrontendLibraries>
 }
 
 interface BackendService {
-  platform: Platform
-  libraries: BackendLibraries[]
+  BE_platform: Platform
+  BE_libraries: Record<BackendFeatures, BackendLibraries>
 }
 
 type MonolithService = FrontendService & BackendService
@@ -45,7 +45,7 @@ class CodeTemplator {
   private monorepoTools = [MonorepoTool.NIX, MonorepoTool.TURBO_REPO]
   private packageManagers = [PackageManager.NPM, PackageManager.PNPM, PackageManager.YARN]
   private platforms = [Platform.DESKTOP, Platform.WEB, Platform.ANDROID, Platform.IOS, Platform.CROSS_PLATFORM]
-  private architectures = [ProjectArchitecture.BACKEND_ONLY, ProjectArchitecture.FRONTEND_ONLY, ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC]
+  private architectures = [ProjectArchitecture.BACKEND_ONLY, ProjectArchitecture.FRONTEND_ONLY, ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC, ProjectArchitecture.MICROSERVICE_MONOREPO, ProjectArchitecture.MICROSERVICE_POLY_REPO]
 
   private async askProjectQuestions(): Promise<ProjectConfig> {
     // Initial project configuration
@@ -112,7 +112,7 @@ class CodeTemplator {
   }
 
   private async configureService(serviceNumber: number): Promise<ServiceConfig> {
-    const { type } = await inquirer.prompt({
+    const { type } = await inquirer.prompt<{ type: ProjectArchitecture }>({
       type: 'list',
       name: 'type',
       message: `Configure Service ${serviceNumber}:`,
@@ -127,7 +127,7 @@ class CodeTemplator {
         const frontendConfig = await this.configureFrontendService();
         return { type, config: frontendConfig };
       case ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC:
-        const monolithConfig = await this.configureBackendService();
+        const monolithConfig = await this.configureMonolithService();
         return { type, config: monolithConfig };
       default:
         break;
@@ -143,11 +143,65 @@ class CodeTemplator {
   }
 
   private async configureFrontendService(): Promise<FrontendService> {
-    throw new Error("Method not implemented.");
+    const { FE_platform } = await inquirer.prompt<FrontendService>([
+      {
+        type: 'list',
+        name: 'FE_platform',
+        message: `Specify platform for the app`,
+        choices: this.platforms
+      }
+    ])
+
+    let features: Partial<Record<FrontendFeatures, FrontendLibraries>> = {}
+
+    const featureEntries = Array.from(FRONTEND_MAP.entries());
+
+    for (const [feature, options] of featureEntries) {
+      const { selectedOption } = await inquirer.prompt({
+        type: 'list',
+        name: 'selectedOption',
+        message: `Select a library/tool for ${feature}:`,
+        choices: options,
+      });
+
+      features[feature] = selectedOption;
+    }
+
+    return {
+      FE_libraries: features as Record<FrontendFeatures, FrontendLibraries>,
+      FE_platform
+    };
   }
 
   private async configureBackendService(): Promise<BackendService> {
-    throw new Error("Method not implemented.");
+    const { BE_platform } = await inquirer.prompt<BackendService>([
+      {
+        type: 'list',
+        name: 'BE_platform',
+        message: `Specify platform for the app`,
+        choices: this.platforms
+      }
+    ])
+
+    let features: Partial<Record<BackendFeatures, BackendLibraries>> = {}
+
+    const featureEntries = Array.from(BACKEND_MAP.entries());
+
+    for (const [feature, options] of featureEntries) {
+      const { selectedOption } = await inquirer.prompt({
+        type: 'list',
+        name: 'selectedOption',
+        message: `Select a library/tool for ${feature}:`,
+        choices: options,
+      });
+
+      features[feature] = selectedOption;
+    }
+
+    return {
+      BE_libraries: features as Record<BackendFeatures, BackendLibraries>,
+      BE_platform
+    };
   }
 
   async generateProject(): Promise<void> {
