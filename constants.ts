@@ -99,6 +99,7 @@ export enum FrontendLibraries {
   REACT_VERTICAL_TIMELINE_COMPONENT = "react-vertical-timeline-component",
   SCROLL_FEED = 'scroll-feed',
   REACT_FLOW = 'react-flow',
+  EXPO = 'expo'
 }
 
 // Frontend Map remains unchanged
@@ -180,4 +181,10 @@ export const BACKEND_MAP = new Map<BackendFeatures, BackendLibraries[]>([
   [BackendFeatures.DATABASE, [BackendLibraries.POSTGRES, BackendLibraries.MONGODB, BackendLibraries.MYSQL, BackendLibraries.SQLITE, BackendLibraries.REDIS, BackendLibraries.CUSTOM]],
   [BackendFeatures.API_STRUCTURE, [BackendLibraries.REST, BackendLibraries.APOLLO_GRAPHQL, BackendLibraries.SOCKET_IO, BackendLibraries.TRPC]],
   [BackendFeatures.MEDIA_SERVER, [BackendLibraries.AWS_S3, BackendLibraries.CLOUDINARY, BackendLibraries.CUSTOM, BackendLibraries.SELF, BackendLibraries.FIREBASE_CLOUD_STORAGE]],
+])
+
+export const PLATFORM_MAP = new Map<Platform, FrontendLibraries[]>([
+  [Platform.WEB, [FrontendLibraries.NEXT, FrontendLibraries.REACT, FrontendLibraries.HYDROGEN, FrontendLibraries.VITE]],
+  [Platform.DESKTOP_BASED_CROSS_PLATFORM, [FrontendLibraries.REACT_NATIVE, FrontendLibraries.EXPO]],
+  [Platform.MOBILE_BASED_CROSS_PLATFORM, [FrontendLibraries.ELECTRON, FrontendLibraries.TAURI]],
 ])

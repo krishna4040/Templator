@@ -13,6 +13,7 @@ import {
   BackendFeatures,
   BACKEND_MAP,
   FRONTEND_MAP,
+  PLATFORM_MAP,
 } from './constants';
 
 interface ServiceConfig {
@@ -201,12 +202,17 @@ class CodeTemplator {
 
   private async configureDesktopBasedCrossPlatformService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
     for (const [feature, options] of featureEntries) {
+      let configuredOptions = options
+
+      if (feature === FrontendFeatures.FRAMEWORK) {
+        configuredOptions = PLATFORM_MAP.get(Platform.DESKTOP_BASED_CROSS_PLATFORM) ?? []
+      }
 
       const { selectedOption } = await inquirer.prompt({
         type: 'list',
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
-        choices: options,
+        choices: configuredOptions,
       });
 
       features[feature] = selectedOption;
@@ -218,11 +224,17 @@ class CodeTemplator {
   private async configureMobileBasedCrossPlatformService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
     for (const [feature, options] of featureEntries) {
 
+      let configuredOptions = options
+
+      if (feature === FrontendFeatures.FRAMEWORK) {
+        configuredOptions = PLATFORM_MAP.get(Platform.MOBILE_BASED_CROSS_PLATFORM) ?? []
+      }
+
       const { selectedOption } = await inquirer.prompt({
         type: 'list',
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
-        choices: options,
+        choices: configuredOptions,
       });
 
       features[feature] = selectedOption;
@@ -234,11 +246,17 @@ class CodeTemplator {
   private async configureWebService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
     for (const [feature, options] of featureEntries) {
 
+      let configuredOptions = options
+
+      if (feature === FrontendFeatures.FRAMEWORK) {
+        configuredOptions = PLATFORM_MAP.get(Platform.WEB) ?? []
+      }
+
       const { selectedOption } = await inquirer.prompt({
         type: 'list',
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
-        choices: options,
+        choices: configuredOptions,
       });
 
       features[feature] = selectedOption;
