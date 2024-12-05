@@ -9,10 +9,9 @@ export enum ProjectType {
 
 export enum Platform {
   WEB = 'web',
-  ANDROID = 'android',
-  IOS = 'ios',
-  CROSS_PLATFORM = 'cross-platform',
-  DESKTOP = 'desktop'
+  MOBILE_BASED_CROSS_PLATFORM = 'mobile-based-cross-platform',
+  DESKTOP_BASED_CROSS_PLATFORM = 'desktop-based-cross-platform',
+  RUNTIME = 'runtime'
 }
 
 export enum ProjectArchitecture {
@@ -47,7 +46,7 @@ export enum FrontendFeatures {
   FRAMEWORK = 'framework',
   BUNDLER = 'bundler',
   API_STRUCTURE = 'api-structure',
-  STYLING = 'styling'
+  STYLING = 'styling',
 }
 
 export enum FrontendLibraries {

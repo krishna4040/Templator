@@ -44,7 +44,7 @@ class CodeTemplator {
 
   private monorepoTools = [MonorepoTool.NIX, MonorepoTool.TURBO_REPO]
   private packageManagers = [PackageManager.NPM, PackageManager.PNPM, PackageManager.YARN]
-  private platforms = [Platform.DESKTOP, Platform.WEB, Platform.ANDROID, Platform.IOS, Platform.CROSS_PLATFORM]
+  private platforms = [Platform.WEB, Platform.DESKTOP_BASED_CROSS_PLATFORM, Platform.MOBILE_BASED_CROSS_PLATFORM]
   private architectures = [ProjectArchitecture.BACKEND_ONLY, ProjectArchitecture.FRONTEND_ONLY, ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC, ProjectArchitecture.MICROSERVICE_MONOREPO, ProjectArchitecture.MICROSERVICE_POLY_REPO]
 
   private async askProjectQuestions(): Promise<ProjectConfig> {
@@ -156,15 +156,19 @@ class CodeTemplator {
 
     const featureEntries = Array.from(FRONTEND_MAP.entries());
 
-    for (const [feature, options] of featureEntries) {
-      const { selectedOption } = await inquirer.prompt({
-        type: 'list',
-        name: 'selectedOption',
-        message: `Select a library/tool for ${feature}:`,
-        choices: options,
-      });
-
-      features[feature] = selectedOption;
+    switch (FE_platform) {
+      case Platform.DESKTOP_BASED_CROSS_PLATFORM:
+        features = await this.configureDesktopBasedCrossPlatformService(featureEntries, features)
+        break;
+      case Platform.WEB:
+        features = await this.configureWebService(featureEntries, features)
+        break
+      case Platform.MOBILE_BASED_CROSS_PLATFORM:
+        features = await this.configureMobileBasedCrossPlatformService(featureEntries, features)
+        break
+      default:
+        console.log("Please select a correct option!");
+        break;
     }
 
     return {
@@ -174,15 +178,6 @@ class CodeTemplator {
   }
 
   private async configureBackendService(): Promise<BackendService> {
-    const { BE_platform } = await inquirer.prompt<BackendService>([
-      {
-        type: 'list',
-        name: 'BE_platform',
-        message: `Specify platform for the app`,
-        choices: this.platforms
-      }
-    ])
-
     let features: Partial<Record<BackendFeatures, BackendLibraries>> = {}
 
     const featureEntries = Array.from(BACKEND_MAP.entries());
@@ -200,8 +195,56 @@ class CodeTemplator {
 
     return {
       BE_libraries: features as Record<BackendFeatures, BackendLibraries>,
-      BE_platform
+      BE_platform: Platform.RUNTIME
     };
+  }
+
+  private async configureDesktopBasedCrossPlatformService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
+    for (const [feature, options] of featureEntries) {
+
+      const { selectedOption } = await inquirer.prompt({
+        type: 'list',
+        name: 'selectedOption',
+        message: `Select a library/tool for ${feature}:`,
+        choices: options,
+      });
+
+      features[feature] = selectedOption;
+    }
+
+    return features
+  }
+
+  private async configureMobileBasedCrossPlatformService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
+    for (const [feature, options] of featureEntries) {
+
+      const { selectedOption } = await inquirer.prompt({
+        type: 'list',
+        name: 'selectedOption',
+        message: `Select a library/tool for ${feature}:`,
+        choices: options,
+      });
+
+      features[feature] = selectedOption;
+    }
+
+    return features
+  }
+
+  private async configureWebService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
+    for (const [feature, options] of featureEntries) {
+
+      const { selectedOption } = await inquirer.prompt({
+        type: 'list',
+        name: 'selectedOption',
+        message: `Select a library/tool for ${feature}:`,
+        choices: options,
+      });
+
+      features[feature] = selectedOption;
+    }
+
+    return features
   }
 
   async generateProject(): Promise<void> {
