@@ -23,12 +23,12 @@ interface ServiceConfig {
 
 interface FrontendService {
   FE_platform: Platform
-  FE_libraries: Record<FrontendFeatures, FrontendLibraries>
+  FE_libraries: Record<FrontendFeatures, FrontendLibraries | FrontendLibraries[]>
 }
 
 interface BackendService {
   BE_platform: Platform
-  BE_libraries: Record<BackendFeatures, BackendLibraries>
+  BE_libraries: Record<BackendFeatures, BackendLibraries | BackendLibraries[]>
 }
 
 type MonolithService = FrontendService & BackendService
@@ -41,12 +41,42 @@ interface ProjectConfig {
   services?: ServiceConfig[];
 }
 
+type Input = 'checkbox' | 'list' | 'number' | 'select'
+
 class CodeTemplator {
 
   private monorepoTools = [MonorepoTool.NIX, MonorepoTool.TURBO_REPO]
   private packageManagers = [PackageManager.NPM, PackageManager.PNPM, PackageManager.YARN]
   private platforms = [Platform.WEB, Platform.DESKTOP_BASED_CROSS_PLATFORM, Platform.MOBILE_BASED_CROSS_PLATFORM]
   private architectures = [ProjectArchitecture.BACKEND_ONLY, ProjectArchitecture.FRONTEND_ONLY, ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC, ProjectArchitecture.MICROSERVICE_MONOREPO, ProjectArchitecture.MICROSERVICE_POLY_REPO]
+  private isFeMultiFeature = new Map<FrontendFeatures, Boolean>([
+    [FrontendFeatures.API_STRUCTURE, false],
+    [FrontendFeatures.AUTHENTICATION, false],
+    [FrontendFeatures.BUNDLER, false],
+    [FrontendFeatures.CSS, false],
+    [FrontendFeatures.DATA_FETCHING, false],
+    [FrontendFeatures.FORM_HANDLING, false],
+    [FrontendFeatures.FRAMEWORK, false],
+    [FrontendFeatures.LANGUAGE, false],
+    [FrontendFeatures.STATE_MANAGEMENT, false],
+    [FrontendFeatures.STYLING, true],
+    [FrontendFeatures.TESTING, true],
+    [FrontendFeatures.UI_LIBRARIES, false],
+    [FrontendFeatures.VALIDATION, false],
+  ])
+  private isBeMultiFeature = new Map<BackendFeatures, Boolean>([
+    [BackendFeatures.API_STRUCTURE, false],
+    [BackendFeatures.AUTHENTICATION, false],
+    [BackendFeatures.DATABASE, true],
+    [BackendFeatures.FRAMEWORK, false],
+    [BackendFeatures.LANGUAGE, false],
+    [BackendFeatures.MEDIA_SERVER, false],
+    [BackendFeatures.ORM, false],
+    [BackendFeatures.TESTING, false],
+    [BackendFeatures.VALIDATION, false]
+  ])
+
+  private getInputType = (isMultiFeature: Boolean = false): Input => isMultiFeature ? 'checkbox' : 'list'
 
   private async askProjectQuestions(): Promise<ProjectConfig> {
     // Initial project configuration
@@ -202,14 +232,17 @@ class CodeTemplator {
 
   private async configureDesktopBasedCrossPlatformService(featureEntries: [FrontendFeatures, FrontendLibraries[]][], features: Partial<Record<FrontendFeatures, FrontendLibraries>>): Promise<Partial<Record<FrontendFeatures, FrontendLibraries>>> {
     for (const [feature, options] of featureEntries) {
+
       let configuredOptions = options
+      const inputType = this.getInputType(this.isFeMultiFeature.get(feature))
 
       if (feature === FrontendFeatures.FRAMEWORK) {
         configuredOptions = PLATFORM_MAP.get(Platform.DESKTOP_BASED_CROSS_PLATFORM) ?? []
       }
 
+
       const { selectedOption } = await inquirer.prompt({
-        type: 'list',
+        type: inputType,
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
         choices: configuredOptions,
@@ -225,13 +258,14 @@ class CodeTemplator {
     for (const [feature, options] of featureEntries) {
 
       let configuredOptions = options
+      const inputType = this.getInputType(this.isFeMultiFeature.get(feature))
 
       if (feature === FrontendFeatures.FRAMEWORK) {
         configuredOptions = PLATFORM_MAP.get(Platform.MOBILE_BASED_CROSS_PLATFORM) ?? []
       }
 
       const { selectedOption } = await inquirer.prompt({
-        type: 'list',
+        type: inputType,
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
         choices: configuredOptions,
@@ -247,13 +281,14 @@ class CodeTemplator {
     for (const [feature, options] of featureEntries) {
 
       let configuredOptions = options
+      const inputType = this.getInputType(this.isFeMultiFeature.get(feature))
 
       if (feature === FrontendFeatures.FRAMEWORK) {
         configuredOptions = PLATFORM_MAP.get(Platform.WEB) ?? []
       }
 
       const { selectedOption } = await inquirer.prompt({
-        type: 'list',
+        type: inputType,
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
         choices: configuredOptions,

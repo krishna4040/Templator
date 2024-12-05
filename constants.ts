@@ -168,7 +168,6 @@ export enum BackendFeatures {
   DATABASE = 'database',
   API_STRUCTURE = 'api-structure',
   MEDIA_SERVER = 'media-server',
-  OTHER = 'other'
 }
 
 export const BACKEND_MAP = new Map<BackendFeatures, BackendLibraries[]>([
