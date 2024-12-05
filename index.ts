@@ -50,7 +50,7 @@ class CodeTemplator {
   private platforms = [Platform.WEB, Platform.DESKTOP_BASED_CROSS_PLATFORM, Platform.MOBILE_BASED_CROSS_PLATFORM]
   private architectures = [ProjectArchitecture.BACKEND_ONLY, ProjectArchitecture.FRONTEND_ONLY, ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC, ProjectArchitecture.MICROSERVICE_MONOREPO, ProjectArchitecture.MICROSERVICE_POLY_REPO]
   private isFeMultiFeature = new Map<FrontendFeatures, Boolean>([
-    [FrontendFeatures.API_STRUCTURE, false],
+    [FrontendFeatures.API_STRUCTURE, true],
     [FrontendFeatures.AUTHENTICATION, false],
     [FrontendFeatures.BUNDLER, false],
     [FrontendFeatures.CSS, false],
@@ -65,7 +65,7 @@ class CodeTemplator {
     [FrontendFeatures.VALIDATION, false],
   ])
   private isBeMultiFeature = new Map<BackendFeatures, Boolean>([
-    [BackendFeatures.API_STRUCTURE, false],
+    [BackendFeatures.API_STRUCTURE, true],
     [BackendFeatures.AUTHENTICATION, false],
     [BackendFeatures.DATABASE, true],
     [BackendFeatures.FRAMEWORK, false],
@@ -214,8 +214,10 @@ class CodeTemplator {
     const featureEntries = Array.from(BACKEND_MAP.entries());
 
     for (const [feature, options] of featureEntries) {
+      let inputType = this.getInputType(this.isBeMultiFeature.get(feature))
+
       const { selectedOption } = await inquirer.prompt({
-        type: 'list',
+        type: inputType,
         name: 'selectedOption',
         message: `Select a library/tool for ${feature}:`,
         choices: options,
@@ -234,12 +236,14 @@ class CodeTemplator {
     for (const [feature, options] of featureEntries) {
 
       let configuredOptions = options
-      const inputType = this.getInputType(this.isFeMultiFeature.get(feature))
+      let inputType = this.getInputType(this.isFeMultiFeature.get(feature))
 
       if (feature === FrontendFeatures.FRAMEWORK) {
-        configuredOptions = PLATFORM_MAP.get(Platform.DESKTOP_BASED_CROSS_PLATFORM) ?? []
+        const desktopOptions = PLATFORM_MAP.get(Platform.DESKTOP_BASED_CROSS_PLATFORM) ?? []
+        const webOptions = PLATFORM_MAP.get(Platform.WEB) ?? []
+        configuredOptions = [...desktopOptions, ...webOptions]
+        inputType = 'checkbox'
       }
-
 
       const { selectedOption } = await inquirer.prompt({
         type: inputType,

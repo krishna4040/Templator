@@ -105,15 +105,6 @@ export enum FrontendLibraries {
 // Frontend Map remains unchanged
 export const FRONTEND_MAP = new Map<FrontendFeatures, FrontendLibraries[]>([
   [FrontendFeatures.LANGUAGE, [FrontendLibraries.JAVASCRIPT, FrontendLibraries.TYPESCRIPT]],
-  [FrontendFeatures.DATA_FETCHING, [FrontendLibraries.REACT_QUERY, FrontendLibraries.SWR]],
-  [FrontendFeatures.API_STRUCTURE, [FrontendLibraries.REST, FrontendLibraries.APOLLO_GRAPHQL, FrontendLibraries.SOCKET_IO]],
-  [FrontendFeatures.FORM_HANDLING, [FrontendLibraries.REACT_HOOK_FORM, FrontendLibraries.TANSTACK_FORM, FrontendLibraries.CUSTOM, FrontendLibraries.FORMIK]],
-  [FrontendFeatures.STATE_MANAGEMENT, [FrontendLibraries.REDUX, FrontendLibraries.ZUSTAND, FrontendLibraries.REACT_CONTEXT]],
-  [FrontendFeatures.CSS, [FrontendLibraries.TAILWIND_CSS, FrontendLibraries.VANILLA_CSS]],
-  [FrontendFeatures.TESTING, [FrontendLibraries.VITEST, FrontendLibraries.PLAYWRIGHT, FrontendLibraries.CYPRESS, FrontendLibraries.REACT_TESTING_LIBRARY, FrontendLibraries.CUSTOM]],
-  [FrontendFeatures.UI_LIBRARIES, [FrontendLibraries.SHADCN, FrontendLibraries.MUI, FrontendLibraries.CUSTOM]],
-  [FrontendFeatures.VALIDATION, [FrontendLibraries.YUP, FrontendLibraries.ZOD, FrontendLibraries.CUSTOM]],
-  [FrontendFeatures.BUNDLER, [FrontendLibraries.VITE, FrontendLibraries.DEFAULT_BUNDLER]],
   [FrontendFeatures.FRAMEWORK, [
     FrontendLibraries.NEXT,
     FrontendLibraries.REACT,
@@ -122,7 +113,17 @@ export const FRONTEND_MAP = new Map<FrontendFeatures, FrontendLibraries[]>([
     FrontendLibraries.TAURI,
     FrontendLibraries.ELECTRON
   ]],
+  [FrontendFeatures.BUNDLER, [FrontendLibraries.VITE, FrontendLibraries.DEFAULT_BUNDLER]],
+
+  [FrontendFeatures.CSS, [FrontendLibraries.TAILWIND_CSS, FrontendLibraries.VANILLA_CSS]],
+  [FrontendFeatures.API_STRUCTURE, [FrontendLibraries.REST, FrontendLibraries.APOLLO_GRAPHQL, FrontendLibraries.SOCKET_IO]],
+  [FrontendFeatures.DATA_FETCHING, [FrontendLibraries.REACT_QUERY, FrontendLibraries.SWR]],
+  [FrontendFeatures.STATE_MANAGEMENT, [FrontendLibraries.REDUX, FrontendLibraries.ZUSTAND, FrontendLibraries.REACT_CONTEXT]],
+  [FrontendFeatures.FORM_HANDLING, [FrontendLibraries.REACT_HOOK_FORM, FrontendLibraries.TANSTACK_FORM, FrontendLibraries.CUSTOM, FrontendLibraries.FORMIK]],
+  [FrontendFeatures.TESTING, [FrontendLibraries.VITEST, FrontendLibraries.PLAYWRIGHT, FrontendLibraries.CYPRESS, FrontendLibraries.REACT_TESTING_LIBRARY, FrontendLibraries.CUSTOM]],
+  [FrontendFeatures.VALIDATION, [FrontendLibraries.YUP, FrontendLibraries.ZOD, FrontendLibraries.CUSTOM]],
   [FrontendFeatures.AUTHENTICATION, [FrontendLibraries.CLERK, FrontendLibraries.NEXT_AUTH, FrontendLibraries.FIREBASE_AUTH, FrontendLibraries.CUSTOM]],
+  [FrontendFeatures.UI_LIBRARIES, [FrontendLibraries.SHADCN, FrontendLibraries.MUI, FrontendLibraries.CUSTOM]],
   [FrontendFeatures.STYLING, [FrontendLibraries.SWIPER, FrontendLibraries.LOTTIE, FrontendLibraries.REACT_ICONS, FrontendLibraries.FRAMER, FrontendLibraries.MOTION, FrontendLibraries.CHART_JS, FrontendLibraries.TYPE_ANIMATION, FrontendLibraries.SCROLL_FEED, FrontendLibraries.REACT_FLOW, FrontendLibraries.REACT_VERTICAL_TIMELINE_COMPONENT]],
 ]);
 
@@ -172,18 +173,19 @@ export enum BackendFeatures {
 
 export const BACKEND_MAP = new Map<BackendFeatures, BackendLibraries[]>([
   [BackendFeatures.LANGUAGE, [BackendLibraries.JAVASCRIPT, BackendLibraries.TYPESCRIPT]],
-  [BackendFeatures.TESTING, [BackendLibraries.VITEST, BackendLibraries.CUSTOM]],
-  [BackendFeatures.VALIDATION, [BackendLibraries.YUP, BackendLibraries.ZOD, BackendLibraries.CUSTOM]],
   [BackendFeatures.FRAMEWORK, [BackendLibraries.EXPRESS, BackendLibraries.NEST, BackendLibraries.DENO, BackendLibraries.BUN, BackendLibraries.CUSTOM]],
-  [BackendFeatures.AUTHENTICATION, [BackendLibraries.CLERK, BackendLibraries.FIREBASE_AUTH, BackendLibraries.CUSTOM]],
   [BackendFeatures.ORM, [BackendLibraries.PRISMA, BackendLibraries.DRIZZLE, BackendLibraries.MONGOOSE, BackendLibraries.CUSTOM]],
   [BackendFeatures.DATABASE, [BackendLibraries.POSTGRES, BackendLibraries.MONGODB, BackendLibraries.MYSQL, BackendLibraries.SQLITE, BackendLibraries.REDIS, BackendLibraries.CUSTOM]],
   [BackendFeatures.API_STRUCTURE, [BackendLibraries.REST, BackendLibraries.APOLLO_GRAPHQL, BackendLibraries.SOCKET_IO, BackendLibraries.TRPC]],
+
+  [BackendFeatures.TESTING, [BackendLibraries.VITEST, BackendLibraries.CUSTOM]],
+  [BackendFeatures.VALIDATION, [BackendLibraries.YUP, BackendLibraries.ZOD, BackendLibraries.CUSTOM]],
+  [BackendFeatures.AUTHENTICATION, [BackendLibraries.CLERK, BackendLibraries.FIREBASE_AUTH, BackendLibraries.CUSTOM]],
   [BackendFeatures.MEDIA_SERVER, [BackendLibraries.AWS_S3, BackendLibraries.CLOUDINARY, BackendLibraries.CUSTOM, BackendLibraries.SELF, BackendLibraries.FIREBASE_CLOUD_STORAGE]],
 ])
 
 export const PLATFORM_MAP = new Map<Platform, FrontendLibraries[]>([
-  [Platform.WEB, [FrontendLibraries.NEXT, FrontendLibraries.REACT, FrontendLibraries.HYDROGEN, FrontendLibraries.VITE]],
-  [Platform.DESKTOP_BASED_CROSS_PLATFORM, [FrontendLibraries.REACT_NATIVE, FrontendLibraries.EXPO]],
-  [Platform.MOBILE_BASED_CROSS_PLATFORM, [FrontendLibraries.ELECTRON, FrontendLibraries.TAURI]],
+  [Platform.WEB, [FrontendLibraries.NEXT, FrontendLibraries.REACT, FrontendLibraries.HYDROGEN]],
+  [Platform.DESKTOP_BASED_CROSS_PLATFORM, [FrontendLibraries.ELECTRON, FrontendLibraries.TAURI]],
+  [Platform.MOBILE_BASED_CROSS_PLATFORM, [FrontendLibraries.REACT_NATIVE]],
 ])
