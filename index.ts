@@ -11,40 +11,31 @@ import {
   BackendLibraries,
   FrontendFeatures,
   BackendFeatures,
+  CodeConsistencyFeatures,
+  CodeConsistencyOptions,
+  DeploymentFeatures,
+  DeploymentOptions,
+  ProjectType
+} from './constants/enums';
+
+import {
   BACKEND_MAP,
+  CODE_CONSISTENCY_MAP,
+  DEPLOYMENT_MAP,
   FRONTEND_MAP,
-  PLATFORM_MAP,
-} from './constants';
+  PLATFORM_MAP
+} from './constants/maps'
 
-interface ServiceConfig {
-  type: ProjectArchitecture;
-  config?: FrontendService | BackendService | MonolithService
-}
-
-interface FrontendService {
-  FE_platform: Platform
-  FE_libraries: Record<FrontendFeatures, FrontendLibraries | FrontendLibraries[]>
-}
-
-interface BackendService {
-  BE_platform: Platform
-  BE_libraries: Record<BackendFeatures, BackendLibraries | BackendLibraries[]>
-}
-
-type MonolithService = FrontendService & BackendService
-
-interface ProjectConfig {
-  architecture: ProjectArchitecture;
-  packageManager: PackageManager;
-  monorepoTool?: MonorepoTool;
-  serviceCount?: number;
-  services?: ServiceConfig[];
-}
-
-type Input = 'checkbox' | 'list' | 'number' | 'select'
+import {
+  BackendService,
+  FrontendService,
+  Input,
+  MonolithService,
+  ProjectConfig,
+  ServiceConfig
+} from './constants/interfaces'
 
 class CodeTemplator {
-
   private monorepoTools = [MonorepoTool.NIX, MonorepoTool.TURBO_REPO]
   private packageManagers = [PackageManager.NPM, PackageManager.PNPM, PackageManager.YARN]
   private platforms = [Platform.WEB, Platform.DESKTOP_BASED_CROSS_PLATFORM, Platform.MOBILE_BASED_CROSS_PLATFORM]
