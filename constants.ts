@@ -36,7 +36,7 @@ export enum MonorepoTool {
 
 export enum FrontendFeatures {
   LANGUAGE = 'language',
-  STYLING = 'styling',
+  CSS = 'css',
   DATA_FETCHING = 'data-fetching',
   UI_LIBRARIES = 'ui-libraries',
   FORM_HANDLING = 'form-handling',
@@ -46,7 +46,8 @@ export enum FrontendFeatures {
   AUTHENTICATION = 'authentication',
   FRAMEWORK = 'framework',
   BUNDLER = 'bundler',
-  API_STRUCTURE = 'api-structure'
+  API_STRUCTURE = 'api-structure',
+  STYLING = 'styling'
 }
 
 export enum FrontendLibraries {
@@ -77,13 +78,6 @@ export enum FrontendLibraries {
   REACT = 'react',
   REACT_NATIVE = 'react-native',
   HYDROGEN = 'hydrogen',
-  VUE = 'vue',
-  PREACT = 'preact',
-  LIT = 'lit',
-  SVELTE = 'svelte',
-  SOLID = 'solid',
-  QUICK = 'quick',
-  ANGULAR = 'angular',
   ELECTRON = 'electron',
   CUSTOM = 'custom',
   VITE = 'vite',
@@ -93,37 +87,43 @@ export enum FrontendLibraries {
   FIREBASE_AUTH = 'firebase-auth',
   DEFAULT_BUNDLER = 'default-bundler',
   SOCKET_IO = 'socket-io',
-  AXIOS = 'axios',
+  REST = 'rest',
   APOLLO_GRAPHQL = 'apollo-graphql',
+  SWIPER = 'swiper',
+  CHART_JS = 'char-js',
+  LOTTIE = 'lottie',
+  REACT_ICONS = 'react-icons',
+  REACT_SPRING = 'react-spring',
+  FRAMER = 'framer',
+  MOTION = 'motion',
+  TYPE_ANIMATION = 'type-animation',
+  REACT_VERTICAL_TIMELINE_COMPONENT = "react-vertical-timeline-component",
+  SCROLL_FEED = 'scroll-feed',
+  REACT_FLOW = 'react-flow',
 }
 
 // Frontend Map remains unchanged
 export const FRONTEND_MAP = new Map<FrontendFeatures, FrontendLibraries[]>([
   [FrontendFeatures.LANGUAGE, [FrontendLibraries.JAVASCRIPT, FrontendLibraries.TYPESCRIPT]],
   [FrontendFeatures.DATA_FETCHING, [FrontendLibraries.REACT_QUERY, FrontendLibraries.SWR]],
-  [FrontendFeatures.API_STRUCTURE, [FrontendLibraries.AXIOS, FrontendLibraries.APOLLO_GRAPHQL, FrontendLibraries.SOCKET_IO]],
-  [FrontendFeatures.FORM_HANDLING, [FrontendLibraries.REACT_HOOK_FORM, FrontendLibraries.TANSTACK_FORM, FrontendLibraries.CUSTOM]],
+  [FrontendFeatures.API_STRUCTURE, [FrontendLibraries.REST, FrontendLibraries.APOLLO_GRAPHQL, FrontendLibraries.SOCKET_IO]],
+  [FrontendFeatures.FORM_HANDLING, [FrontendLibraries.REACT_HOOK_FORM, FrontendLibraries.TANSTACK_FORM, FrontendLibraries.CUSTOM, FrontendLibraries.FORMIK]],
   [FrontendFeatures.STATE_MANAGEMENT, [FrontendLibraries.REDUX, FrontendLibraries.ZUSTAND, FrontendLibraries.REACT_CONTEXT]],
-  [FrontendFeatures.STYLING, [FrontendLibraries.TAILWIND_CSS, FrontendLibraries.VANILLA_CSS]],
+  [FrontendFeatures.CSS, [FrontendLibraries.TAILWIND_CSS, FrontendLibraries.VANILLA_CSS]],
   [FrontendFeatures.TESTING, [FrontendLibraries.VITEST, FrontendLibraries.PLAYWRIGHT, FrontendLibraries.CYPRESS, FrontendLibraries.REACT_TESTING_LIBRARY, FrontendLibraries.CUSTOM]],
   [FrontendFeatures.UI_LIBRARIES, [FrontendLibraries.SHADCN, FrontendLibraries.MUI, FrontendLibraries.CUSTOM]],
   [FrontendFeatures.VALIDATION, [FrontendLibraries.YUP, FrontendLibraries.ZOD, FrontendLibraries.CUSTOM]],
   [FrontendFeatures.BUNDLER, [FrontendLibraries.VITE, FrontendLibraries.DEFAULT_BUNDLER]],
   [FrontendFeatures.FRAMEWORK, [
     FrontendLibraries.NEXT,
-    FrontendLibraries.ANGULAR,
-    FrontendLibraries.ELECTRON,
     FrontendLibraries.REACT,
     FrontendLibraries.REACT_NATIVE,
-    FrontendLibraries.PREACT,
-    FrontendLibraries.ANGULAR,
-    FrontendLibraries.LIT,
-    FrontendLibraries.SVELTE,
-    FrontendLibraries.SOLID,
+    FrontendLibraries.HYDROGEN,
     FrontendLibraries.TAURI,
-    FrontendLibraries.HYDROGEN
+    FrontendLibraries.ELECTRON
   ]],
   [FrontendFeatures.AUTHENTICATION, [FrontendLibraries.CLERK, FrontendLibraries.NEXT_AUTH, FrontendLibraries.FIREBASE_AUTH, FrontendLibraries.CUSTOM]],
+  [FrontendFeatures.STYLING, [FrontendLibraries.SWIPER, FrontendLibraries.LOTTIE, FrontendLibraries.REACT_ICONS, FrontendLibraries.FRAMER, FrontendLibraries.MOTION, FrontendLibraries.CHART_JS, FrontendLibraries.TYPE_ANIMATION, FrontendLibraries.SCROLL_FEED, FrontendLibraries.REACT_FLOW, FrontendLibraries.REACT_VERTICAL_TIMELINE_COMPONENT]],
 ]);
 
 export enum BackendLibraries {

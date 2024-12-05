@@ -66,17 +66,17 @@ class CodeTemplator {
 
     switch (baseConfig.architecture) {
       case ProjectArchitecture.BACKEND_ONLY:
-        const backendConfig = await this.handleMicroServiceConfiguration();
+        const backendConfig = await this.configureBackendService();
         return { ...baseConfig, ...backendConfig };
       case ProjectArchitecture.MICROSERVICE_MONOREPO:
       case ProjectArchitecture.MICROSERVICE_POLY_REPO:
         const monorepoConfig = await this.handleMicroServiceConfiguration();
         return { ...baseConfig, ...monorepoConfig };
       case ProjectArchitecture.FRONTEND_BACKEND_MONOLITHIC:
-        const monolithicConfig = await this.handleMicroServiceConfiguration();
+        const monolithicConfig = await this.configureMonolithService();
         return { ...baseConfig, ...monolithicConfig };
       case ProjectArchitecture.FRONTEND_ONLY:
-        const frontendConfig = await this.handleMicroServiceConfiguration();
+        const frontendConfig = await this.configureFrontendService();
         return { ...baseConfig, ...frontendConfig };
       default:
         console.log("Please select a correct option!");
